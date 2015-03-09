@@ -43,8 +43,15 @@ syscall
 linearsearch:
 
 #store saved register
-
-
+addi $sp, $sp, -32   # decrease stack pointer by 32 byte all 8 register
+sw $s0, 28($sp)    #store $s0
+sw $s1, 24($sp)	#store $s1
+sw $s2, 20($sp)#store $s2
+sw $s3, 16($sp)#store $s3
+sw $s4, 12($sp)#store $s4
+sw $s5, 8($sp)#store $s5
+sw $s6, 4($sp)#store $s6
+sw $s7, 0($sp)#store $s7
 
 addi $s6,$0,-1             #ret =-1
 add $s0, $0, $0            # $s0 = i = 0
@@ -66,7 +73,22 @@ addi $s6, $s0, 0        #ret = i
 
 notfound1:
 add $v0,$s6,$0            #return ret
+
+
+#restore saved register
+sw $s7, 0($sp)#store $s0
+sw $s6, 4($sp)#store $s1
+sw $s5, 8($sp)#store $s2
+sw $s4, 12($sp)#store $s3
+sw $s3, 16($sp)#store $s4
+sw $s2, 20($sp)#store $s5
+sw $s1, 24($sp)#store $s6
+sw $s0, 28($sp)#store $s7
+addi $sp,$sp,32  #increase stack pointer  by 32 byte
+
+
 jr $ra			#return
+
 
 
 
