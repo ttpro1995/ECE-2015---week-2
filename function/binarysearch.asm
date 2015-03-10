@@ -1,3 +1,5 @@
+#Thai Thien
+
 .data
 aa1:	.word	1
 aa2:	.word	3
