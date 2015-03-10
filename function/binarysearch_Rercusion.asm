@@ -158,7 +158,7 @@ j foundmid3          #		return mid;
 
 
 foundmid3: #return a[i]
-add $v0,$s5,$0 
+add $s7,$s5,$0 # s7 = return value = mid 
 j notfound3  #done setting v0
 
 foundleft3: #recur left sub array
