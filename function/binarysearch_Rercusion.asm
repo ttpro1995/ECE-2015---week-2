@@ -12,7 +12,7 @@ aa8:	.word	17
 aa9:	.word	18
 aa10:	.word	20
 length:  .word  10
-val:     .word  15
+val:     .word  18
 
 
 
