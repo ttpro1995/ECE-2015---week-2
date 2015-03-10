@@ -62,7 +62,7 @@ syscall			#exit
 #	
 #	return -1;
 #}
-binary_search:
+binary_search_norercusion:
 #store saved register
 addi $sp, $sp, -32   # decrease stack pointer by 32 byte all 8 register
 sw $s0, 28($sp)    #store $s0
