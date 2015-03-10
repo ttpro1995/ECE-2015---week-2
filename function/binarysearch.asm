@@ -18,20 +18,20 @@ val:     .word  15
 
 .text
 main:
-la $a0, aa1
-la $s1, length
-lw $a1, ($s1)
-la $s2, val
-lw $a2, ($s2)
+la $a0, aa1                 #load arg arr
+la $s1, length  	#load address length into s1
+lw $a1, ($s1)		#load arg length
+la $s2, val		#load address val into s2
+lw $a2, ($s2)		#load arg val
 
-jal binary_search
-
-add $a0, $v0,$0
-addi $v0, $0,1
-syscall
-
-addi $v0,$0,10
-syscall
+jal binary_search	#call binary search 
+ 
+add $a0, $v0,$0		#a0 = return value
+addi $v0, $0,1          #v0 = 1 print integer
+syscall			#print integer
+	
+addi $v0,$0,10		#v0 = 10 exit
+syscall			#exit
 
 
 
@@ -101,7 +101,7 @@ bne $t0,$0, valsmallermid2
 
 #else
 addi $s0, $s5,1 #bottom = mid + 1;	
-j whilecodition2
+j whilecodition2  # jump to while condition
 				
 # if (key < arr[mid])
 #			top = mid - 1;
@@ -111,7 +111,7 @@ addi $s7, $s5,-1 #top = mid - 1;
 
 whilecodition2:
 slt $t0,$s7,$s0  # (bottom <= top)== not (top < bottom ), t0 = 0 when bottom <= top
-beq $t0,$0,whileloop2
+beq $t0,$0,whileloop2		#if (bottom <=top) continue while loop
 
 
       
