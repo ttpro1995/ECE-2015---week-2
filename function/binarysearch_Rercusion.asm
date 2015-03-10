@@ -76,7 +76,7 @@ sw $s2, 20($sp)#store $s5
 sw $s1, 24($sp)#store $s6
 sw $s0, 28($sp)#store $s7
 addi $sp,$sp,32  #increase stack pointer  by 32 byte
-jr $ra
+jr $ra   #return 
 ####################
 
 
