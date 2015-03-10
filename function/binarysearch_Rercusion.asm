@@ -38,6 +38,7 @@ syscall			#exit
 #####################
 #int binarysearch ( int * arr, int numofelements, int val ) ;
 #store saved register
+binary_search:
 addi $sp, $sp, -32   # decrease stack pointer by 32 byte all 8 register
 sw $s0, 28($sp)    #store $s0
 sw $s1, 24($sp)	#store $s1
@@ -48,9 +49,21 @@ sw $s5, 8($sp)#store $s5
 sw $s6, 4($sp)#store $s6
 sw $s7, 0($sp)#store $s7
 
+add $s0,$a0,$0  #$s0 = base address of array
+add $s1,$a1,$0  #$s1 = length
+add $s2,$a2,$0  #$s2 = val
 
+add $a0,$s0,$0  # $a0 = base address of array
+addi $a1,$0,0   # $a1 = low = 0
+add  $a2,$s1,$0 # $a2 = high = length of array
+add  $a3,$s2,$0 # $a3 = x = val which is key
 
-
+addi $sp,$sp,-4 #decrease stack pointer by 4
+sw $ra,($sp)   #store $ra
+jal binary_search_rercusion
+# return value should be in $v0
+lw $ra,($sp)  #restore $ra
+addi $sp,$sp,4   #increase stack pointer by 4
 
 
 #restore saved register
@@ -123,7 +136,7 @@ bne $t0,$0,notfound3   #jump to notfound3 which will return -1
 
 #	int mid = (low + high) / 2;
 add $s5,$s1,$s2       # $s5 = mid = low + high
-srl $s5,$s5,2         # $s5 =  (low + high) / 2;
+srl $s5,$s5,1         # $s5 =  (low + high) / 2;
 
 add $s6,$s5,$s5       # $s6 = i*2
 add $s6,$s6,$s6       # $s6 = i*4
