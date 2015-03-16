@@ -25,7 +25,7 @@ lw $a1, ($s1)		#load arg length
 la $s2, asc		#load address asc into s2
 lw $a2, ($s2)		#load arg asc
 
-jal binary_search	#call binary search 
+jal BubbleSort	#call binary search 
  
 	
 addi $v0,$0,10		#v0 = 10 exit
@@ -69,7 +69,7 @@ whileLoop3:
 #	{
 add $s3,$0,$0	#		flag = 0;
 #		for (j = 0; j < (num - 1); j++)
-addi $s4,$0,$0   #init j = 0
+addi $s4,$0,0   #init j = 0
 j for3
 forLoop3:
 #		{
@@ -93,16 +93,18 @@ addi $s3,$0,1	#					flag = 1;               // indicates that a swap occurred.
 noswapasc03:
 j endasc3           # done what we need to do when asc ==0
 else3:   #			else
-#			{
-#				if (arr[j + 1] < arr[j])      // ascending order simply changes to <
-#				{
-#					temp = arr[j];             // swap elements
-#					arr[j] = arr[j + 1];
-#					arr[j + 1] = temp;
-#					flag = 1;               // indicates that a swap occurred.
-#				}
-#			}
-#		}
+addi $t4,$s4,1  #t4 = j+1  
+sll  $t4,$t4,2  # t4 = (j+1)*4
+add  $t4,$t4,$s0 #t4 = (j+1)*4 + base address of arr = address of arr[j+1]
+addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j]
+lw   $t5,($t3)   #t5 = arr[i]
+lw   $t6,($t4)   #t6 = arr[i+1]
+slt $t0,$t6,$t5  #if (arr[j + 1] < arr[j])  then t0 = 1
+beq $t0,$0,noswapasc03 # if not (arr[j + 1] < arr[j]), do nothing
+#				{  #					temp = arr[j];             // swap elements
+sw  $t6,($t3) #					arr[j] = arr[j + 1];
+sw  $t5,($t4) #					arr[j + 1] = a[j];
+addi $s3,$0,1	#	flag = 1;               // indicates that a swap occurred.	
 endasc3:
 addi $s4, $s4,1  #increase j
 for3:
