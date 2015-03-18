@@ -4,14 +4,14 @@
 aa1:	.word	1
 aa2:	.word	3
 aa3:	.word	2
-aa4:	.word	15
-aa5:	.word	12
-aa6:	.word	25
-aa7:	.word	17
-aa8:	.word	16
-aa9:	.word	18
-aa10:	.word	20
-length:  .word  10
+#aa4:	.word	15
+#aa5:	.word	12
+#aa6:	.word	25
+#aa7:	.word	17
+#aa8:	.word	16
+#aa9:	.word	18
+#aa10:	.word	20
+length:  .word  3
 val:     .word  15
 
 asc: .word 1
@@ -69,14 +69,17 @@ addi $t1, $s1,-1 #t1 = num of element -1
 slt $t0, $t1,$s4  #if not(numofelement-1 < i) then $t0 = 0
 bne $t0,$0,doneFor4	#t0 not 0 then end Forloop
 
+#current = arr[i]
 sll $t2,$s4,2   # $t2 = 4*i
 add $t2,$t2,$s0 #t2 = address of arr[i]
 lw $t3,($t2)  # t3 = arr[i]	
 add $s5,$t3,$0	#$s5 = current = arr[i];
+
 addi $s6,$s4,-1	#int j = i - 1;
 
 Insertasc4:
-beq $s2,$0,Insertnotasc4 # asc = 0 branch Insertnotasc4    # if (asc)		
+beq $s2,$0,Insertnotasc4 # asc = 0 branch Insertnotasc4    # if (asc)	
+	
 j conditionwhile41 #jump to condition
 while41: #while (j >= 0 && current < arr[j]) 
 
@@ -95,7 +98,7 @@ conditionwhile41:
 slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
 bne $t0,$0, failconditionwhile41 # t0 not 0 then fail while41 condition
 sll $t2,$s6,2         #t2 = 4*j
-add $t2,$s0,$0        #t2 = address arr[j]
+add $t2,$t2,$s0        #t2 = address arr[j]
 lw $t3,($t2)          #t3 = arr[j]
 slt $t0,$s5,$t3       # if current < arr[j] then t0 =1
 beq $t0,$0,failconditionwhile41  #t0 = 0 fail 
@@ -104,11 +107,9 @@ failconditionwhile41:
 						
 j doneasc4      #skip not asc
 
-
 Insertnotasc4:#				else
 j conditionwhile42 #jump to condition
 	while42: #while (j >= 0 && current > arr[j]) 
-
 				#{
 				#arr[j + 1] = arr[j];
 sll $t2,$s6,2         #t2 = 4*j
@@ -122,7 +123,7 @@ conditionwhile42:
 slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
 bne $t0,$0, failconditionwhile42 # t0 not 0 then fail while41 condition
 sll $t2,$s6,2         #t2 = 4*j
-add $t2,$s0,$0        #t2 = address arr[j]
+add $t2,$t2,$s0        #t2 = address arr[j]
 lw $t3,($t2)          #t3 = arr[j]
 slt $t0,$t3,$s5       # if current > arr[j] then t0 =1
 beq $t0,$0,failconditionwhile42  #t0 = 0 fail 
