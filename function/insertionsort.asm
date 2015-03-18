@@ -24,7 +24,7 @@ la $s1, length  	#load address length into s1
 lw $a1, ($s1)		#load arg length
 la $s2, asc		#load address asc into s2
 lw $a2, ($s2)		#load arg asc
-jal BubbleSort	#call bubble sort 
+jal insertionSort	#call insertion search 
 
 la $a0,aa1 		 #load arg arr
 la $s1, length  	#load address length into s1
@@ -35,8 +35,8 @@ addi $v0,$0,10		#v0 = 10 exit
 syscall			#exit
 
 ############################
-BubbleSort:
-#int * bubblesort ( int * arr, int numofelements, bool asc ) ;
+insertionSort:
+#void insertionSort(int arr[], int numofelement, int asc)
 # $a0 = int *arr
 # $a1 = int numofelements
 # $a2 = bool asc
@@ -54,72 +54,98 @@ sw $s7, 0($sp)#store $s7
 add $s0,$a0,$0 #$s0 = arr
 add $s1,$a1,$0 #$s1 = num
 add $s2,$a2,$0 #$s2 = asc
-addi $s3,$0,1  # $s3 = flag =1
-# $s4 = j
+
+addi $s4,$0,1  #init $s4 = 1 = i
 
 
-#void BubbleSort(int* arr, int num,bool asc)
-#{
-#	int  j, flag = 1;    // set flag to 1 to start first pass
-#	int temp;             // holding variable
+#s4 = i
+#s5 = current
+#s6 = j
+
+
+For4: #for (int i=1;i<=numofelement-1;i++) {
+# if not(numofelement-1 < i) then loop
+addi $t1, $s1,-1 #t1 = num of element -1
+slt $t0, $t1,$s4  #if not(numofelement-1 < i) then $t0 = 0
+bne $t0,$0,doneFor4	#t0 not 0 then end Forloop
+
+sll $t2,$s4,2   # $t2 = 4*i
+add $t2,$t2,$s0 #t2 = address of arr[i]
+lw $t3,($t2)  # t3 = arr[i]	
+add $s5,$t3,$0	#$s5 = current = arr[i];
+addi $s6,$s4,-1	#int j = i - 1;
+
+Insertasc4:
+beq $s2,$0,Insertnotasc4 # asc = 0 branch Insertnotasc4    # if (asc)		
+j conditionwhile41 #jump to condition
+while41: #while (j >= 0 && current < arr[j]) 
+
+				#{
+#arr[j + 1] = arr[j];
+sll $t2,$s6,2         #t2 = 4*j
+add $t2,$s0,$0        #t2 = address arr[j]
+addi $t3,$t2,4        #t3 = address arr[j+1]
+lw $t4,($t2)          #t4 = arr[i]
+sw $t4,($t3)          # arr[j+1] = arr[j]
+
+addi $s6,$s6,-1		#		--j;
+			#}
+
+conditionwhile41:
+slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
+bne $t0,$0, failconditionwhile41 # t0 not 0 then fail while41 condition
+sll $t2,$s6,2         #t2 = 4*j
+add $t2,$s0,$0        #t2 = address arr[j]
+lw $t3,($t2)          #t3 = arr[j]
+slt $t0,$s5,$t3       # if current < arr[j] then t0 =1
+beq $t0,$0,failconditionwhile41  #t0 = 0 fail 
+j while41  #while loop
+failconditionwhile41:
+						
+j doneasc4      #skip not asc
+
+
+Insertnotasc4:#				else
+j conditionwhile42 #jump to condition
+	while42: #while (j >= 0 && current > arr[j]) 
+
+				#{
+				#arr[j + 1] = arr[j];
+sll $t2,$s6,2         #t2 = 4*j
+add $t2,$s0,$0        #t2 = address arr[j]
+addi $t3,$t2,4        #t3 = address arr[j+1]
+lw $t4,($t2)          #t4 = arr[i]
+sw $t4,($t3)          # arr[j+1] = arr[j]
+addi $s6,$s6,-1		#		--j;
+			#}
+conditionwhile42:
+slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
+bne $t0,$0, failconditionwhile42 # t0 not 0 then fail while41 condition
+sll $t2,$s6,2         #t2 = 4*j
+add $t2,$s0,$0        #t2 = address arr[j]
+lw $t3,($t2)          #t3 = arr[j]
+slt $t0,$t3,$s5       # if current > arr[j] then t0 =1
+beq $t0,$0,failconditionwhile42  #t0 = 0 fail 
+j while42  #while loop
+failconditionwhile42:
+		
+doneasc4:		
+
+# arr[j + 1] = current;
+sll $t2,$s6,2         #t2 = 4*j
+add $t2,$s0,$0        #t2 = address arr[j]
+addi $t2,$t2,4        #t2 = address arr[j+1]
+sw $s5,($t2)         # arr[j+1]= current
+
+	#}
 
 
 
-j while3 #check while condition		
+addi $s4,$s4,1  #increase i
+j For4 #jump to condition
 
-whileLoop3:
-#	while (flag)
-#	{
-add $s3,$0,$0	#		flag = 0;
-#		for (j = 0; j < (num - 1); j++)
-addi $s4,$0,0   #init j = 0
-j for3
-forLoop3:
-#		{
-bne $s2,$0,else3	#			if (asc == 0)
-#			{
-#				if (arr[j + 1] > arr[j])      // ascending order simply changes to <
-addi $t4,$s4,1  #t4 = j+1  
-sll  $t4,$t4,2  # t4 = (j+1)*4
-add  $t4,$t4,$s0 #t4 = (j+1)*4 + base address of arr = address of arr[j+1]
-addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j]
-lw   $t5,($t3)   #t5 = arr[i]
-lw   $t6,($t4)   #t6 = arr[i+1]
-slt $t0,$t5,$t6  #if (arr[j + 1] > arr[j])  then t0 = 1
-beq $t0,$0,noswapasc03 # if not (arr[j + 1] > arr[j]), do nothing
-#				{  #					temp = arr[j];             // swap elements
-sw  $t6,($t3) #					arr[j] = arr[j + 1];
-sw  $t5,($t4) #					arr[j + 1] = a[j];
-addi $s3,$0,1	#					flag = 1;               // indicates that a swap occurred.
-#				}
-#			}
-noswapasc03:
-j endasc3           # done what we need to do when asc ==0
-else3:   #			else
-addi $t4,$s4,1  #t4 = j+1  
-sll  $t4,$t4,2  # t4 = (j+1)*4
-add  $t4,$t4,$s0 #t4 = (j+1)*4 + base address of arr = address of arr[j+1]
-addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j]
-lw   $t5,($t3)   #t5 = arr[i]
-lw   $t6,($t4)   #t6 = arr[i+1]
-slt $t0,$t6,$t5  #if (arr[j + 1] < arr[j])  then t0 = 1
-beq $t0,$0,noswapasc03 # if not (arr[j + 1] < arr[j]), do nothing
-#				{  #					temp = arr[j];             // swap elements
-sw  $t6,($t3) #					arr[j] = arr[j + 1];
-sw  $t5,($t4) #					arr[j + 1] = a[j];
-addi $s3,$0,1	#	flag = 1;               // indicates that a swap occurred.	
-endasc3:
-addi $s4, $s4,1  #increase j
-for3:
-addi $t1,$s1,-1   # t1 = num-1
-slt  $t0, $s4,$t1 # j < (num - 1) then t0 = 1
-bne  $t0,$0,forLoop3
-#	}
-#}
-while3:
-bne $s3,$0,whileLoop3  # while (flag) , loop
+doneFor4:  #done for loop
 
-donebubblesort3:
 
 #restore saved register
 sw $s7, 0($sp)#store $s0
