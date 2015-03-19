@@ -107,26 +107,24 @@ sw $s5, 8($sp)#store $s5
 sw $s6, 4($sp)#store $s6
 sw $s7, 0($sp)#store $s7
 
-addi $sp, $sp, -16
-sw $s0, ($sp)
-sw $a1, 4($sp)
-sw $a2, 8($sp)
-sw $ra, 12($sp) 
-slt $t0, $a2, $a1
-beq $t0, 0, E6
-jal partition
-add $s0, $v0, $zero
-addi $a1, $s0, -1
-jal requicksort
-lw $a1, 4($sp)
-addi $a2, $s0, 1
-jal requicksort
-E6:
-lw $s0, ($sp)
-lw $a1, 4($sp)
-lw $a2, 8($sp)
-lw $ra, 12($sp) 
-addi $sp, $sp, 16
+addi $sp, $sp, -12 # adjust stack pointer for 3 registers store 
+sw $ra, ($sp)    #store $ra on stack
+sw $a1, 4($sp)  #store $a1 on stack
+sw $a2, 8($sp)  #store $a2 on stack
+slt $t0, $a2, $a1    # if $a2 < $a1 then t0 = 1
+beq $t0, 0, E6     # if t0 = 0 branch to Ê 
+jal partition      # call procedure partition
+add $s0, $v0, $0    # $s0 = $v0
+addi $a1, $s0, -1       # $a1 = $s0 -1
+jal requicksort    # call requicksort
+lw $a1, 4($sp)     # restore $a1  from stack
+addi $a2, $s0, 1   # $a2 = $s0 +1
+jal requicksort    # call requicksort
+E6: 
+lw $ra, ($sp) 		# restore $ra
+lw $a1, 4($sp) 		#restore $a1
+lw $a2, 8($sp)		#restore $a2
+addi $sp, $sp, 12	# adjust stack pointer
 
 
 
