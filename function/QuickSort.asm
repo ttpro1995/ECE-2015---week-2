@@ -180,13 +180,15 @@ bne $s3, 1, E7
 L7:
 lw $s3, ($s2)
 slt $s4, $s3, $s0
-bne $s4, 1, L8
+#bne $s4, 1, L8
+beq $s4,$0,L8#
 addi $s2, $s2, 4
 j L7
 L8:
 lw $s3, ($s1)
 slt $s4, $s0, $s3
-bne $s4, 1, L9
+#bne $s4, 1, L9
+beq $s4,$0,L9#
 addi $s1, $s1, -4
 j L8
 L9:
@@ -196,7 +198,8 @@ add $s2, $s2, 4
 j L9
 I1:
 slt $s5, $s2, $s1
-bne $s5, 1, E7
+#bne $s5, 1, E7
+beq $s5,$0,E7#
 sw $s4, ($s1)
 sw $s3, ($s2)
 j L6
