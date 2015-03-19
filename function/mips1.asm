@@ -14,7 +14,7 @@ aa10:	.word	20
 length:  .word  10
 val:     .word  15
 
-asc: .word 1
+asc: .word 0
 
 
 .text
@@ -76,11 +76,11 @@ add $s4, $t2,$0 # s4 = current = arr[i]
 		
 addi $s5,$s3,-1	#int j = i - 1;
 
+beq $s2,$0,asczero4  # asc = 0
+
 #while (j >= 0 && current < arr[j]) 
 j conWhile4
-While4:	
- 
- 		
+While4:		
 			#{
 ###arr[j + 1] = arr[j];
 add $t1,$s5,$s5 # t1 =j*2
@@ -103,11 +103,43 @@ lw $t2,($t1)    # t2 = arr[j]
 slt $t0,$s4,$t2 # current < arr[j] , t0 = 1 when it true
 beq $t0,$0,doneWhile4  # t0= 0 then (current<arr[j]) false
 j While4         # while loop
-
 doneWhile4:
 
-			
+j doneasc4
+asczero4:
+# asc = 0
+#while (j >= 0 && current < arr[j]) 
+j conWhile42
+While42:		
+			#{
+###arr[j + 1] = arr[j];
+add $t1,$s5,$s5 # t1 =j*2
+add $t1,$t1,$t1 # t1 = 4*j
+add $t1,$t1,$s0 # t1 = address arr[j]
+add $t2,$t1,4   # t2 = address of arr[j+1]
+lw $t3,($t1)    #t3 = arr[j]
+sw $t3,($t2)    # arr[j+1] = arr[j]
+
+addi $s5,$s5,-1	#	--j;
+			#}
+conWhile42:
+slt $t0,$s5,$0		#(j >= 0) == !(j<0), so condition true then t0 = 0
+bne $t0,$0,doneWhile42   # (j >= 0) false 
+#current > arr[j]
+add $t1,$s5,$s5 # t1 =j*2
+add $t1,$t1,$t1 # t1 = 4*j
+add $t1,$t1,$s0 # t1 = address arr[j]
+lw $t2,($t1)    # t2 = arr[j]
+slt $t0,$t2,$s4# current > arr[j] , t0 = 1 when it true
+beq $t0,$0,doneWhile42  # t0= 0 then (current<arr[j]) false
+j While42         # while loop
+doneWhile42:
+
+
+
+doneasc4:
 									
+																											
 ###arr[j + 1] = current;
 add $t1,$s5,$s5 # t1 =j*2
 add $t1,$t1,$t1 # t1 = 4*j
