@@ -154,52 +154,54 @@ sw $s4, 12($sp)#store $s4
 sw $s5, 8($sp)#store $s5
 sw $s6, 4($sp)#store $s6
 sw $s7, 0($sp)#store $s7
-add $t0, $a0, $zero
-add $t1, $a1, $zero
-sll $t1, $t1, 2
-add $t1, $a0, $t1
-add $t2, $a2, $zero
-sll $t2, $t2, 2
-add $t2, $a0, $t2
-add $t3, $a1, $zero
+
+
+add $s0, $a0, $0
+add $s1, $a1, $0
+sll $s1, $s1, 2
+add $s1, $a0, $s1
+add $s2, $a2, $0
+sll $s2, $s2, 2
+add $s2, $a0, $s2
+add $s3, $a1, $0
 sub $a1, $a1, $a2
 li $v0, 42
 syscall
-add $a1, $t3, $zero
-add $t3, $a0, $a2
-add $a0, $t0, $zero
-add $t0, $t3, $zero
-sll $t0, $t0, 2
-add $t0, $a0, $t0
-lw $t0, ($t0)
+add $a1, $s3, $0
+add $s3, $a0, $a2
+add $a0, $s0, $0
+add $s0, $s3, $0
+sll $s0, $s0, 2
+add $s0, $a0, $s0
+lw $s0, ($s0)
 L6:
-slt $t3, $t2, $t1
-bne $t3, 1, E7
+slt $s3, $s2, $s1
+bne $s3, 1, E7
 L7:
-lw $t3, ($t2)
-slt $t4, $t3, $t0
-bne $t4, 1, L8
-addi $t2, $t2, 4
+lw $s3, ($s2)
+slt $s4, $s3, $s0
+bne $s4, 1, L8
+addi $s2, $s2, 4
 j L7
 L8:
-lw $t3, ($t1)
-slt $t4, $t0, $t3
-bne $t4, 1, L9
-addi $t1, $t1, -4
+lw $s3, ($s1)
+slt $s4, $s0, $s3
+bne $s4, 1, L9
+addi $s1, $s1, -4
 j L8
 L9:
-lw $t4, ($t2)
-bne $t4, $t3, I1
-add $t2, $t2, 4
+lw $s4, ($s2)
+bne $s4, $s3, I1
+add $s2, $s2, 4
 j L9
 I1:
-slt $t5, $t2, $t1
-bne $t5, 1, E7
-sw $t4, ($t1)
-sw $t3, ($t2)
+slt $s5, $s2, $s1
+bne $s5, 1, E7
+sw $s4, ($s1)
+sw $s3, ($s2)
 j L6
 E7:
-sub $v0, $t1, $a0
+sub $v0, $s1, $a0
 srl $v0, $v0, 2
 
 
