@@ -36,7 +36,7 @@ syscall			#exit
 
 ############################
 insertionSort:
-#void insertionSort(int arr[], int numofelement, int asc)
+#void insertionSort(int arr[], int n, int asc) {
 # $a0 = int *arr
 # $a1 = int numofelements
 # $a2 = bool asc
@@ -55,97 +55,71 @@ add $s0,$a0,$0 #$s0 = arr
 add $s1,$a1,$0 #$s1 = num
 add $s2,$a2,$0 #$s2 = asc
 
-addi $s4,$0,1  #init $s4 = 1 = i
+# s3 = i
+# s4 = current
+# s5 =j
 
+addi $s3,$0,1   # init i =1
+For4:
+##for (int i=1;i<=n-1;i++) {
+addi $t9,$s1,-1 # $t9 = n -1
+# i <= n-1 == !(i> n-1) == ! ( n-1 <i)
+slt $t0,$t9,$s3  # t0 = 0 when   !( n-1 <i) == true
+bne $t0,$0,doneFor4    # when t0 not 0, do not loop 
 
-#s4 = i
-#s5 = current
-#s6 = j
-
-
-For4: #for (int i=1;i<=numofelement-1;i++) {
-# if not(numofelement-1 < i) then loop
-addi $t1, $s1,-1 #t1 = num of element -1
-slt $t0, $t1,$s4  #if not(numofelement-1 < i) then $t0 = 0
-bne $t0,$0,doneFor4	#t0 not 0 then end Forloop
-
-#current = arr[i]
-sll $t2,$s4,2   # $t2 = 4*i
-add $t2,$t2,$s0 #t2 = address of arr[i]
-lw $t3,($t2)  # t3 = arr[i]	
-add $s5,$t3,$0	#$s5 = current = arr[i];
-
-addi $s6,$s4,-1	#int j = i - 1;
-
-Insertasc4:
-beq $s2,$0,Insertnotasc4 # asc = 0 branch Insertnotasc4    # if (asc)	
-	
-j conditionwhile41 #jump to condition
-while41: #while (j >= 0 && current < arr[j]) 
-
-				#{
-#arr[j + 1] = arr[j];
-sll $t2,$s6,2         #t2 = 4*j
-add $t2,$s0,$0        #t2 = address arr[j]
-addi $t3,$t2,4        #t3 = address arr[j+1]
-lw $t4,($t2)          #t4 = arr[i]
-sw $t4,($t3)          # arr[j+1] = arr[j]
-
-addi $s6,$s6,-1		#		--j;
-			#}
-
-conditionwhile41:
-slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
-bne $t0,$0, failconditionwhile41 # t0 not 0 then fail while41 condition
-sll $t2,$s6,2         #t2 = 4*j
-add $t2,$t2,$s0        #t2 = address arr[j]
-lw $t3,($t2)          #t3 = arr[j]
-slt $t0,$s5,$t3       # if current < arr[j] then t0 =1
-beq $t0,$0,failconditionwhile41  #t0 = 0 fail 
-j while41  #while loop
-failconditionwhile41:
-						
-j doneasc4      #skip not asc
-
-Insertnotasc4:#				else
-j conditionwhile42 #jump to condition
-	while42: #while (j >= 0 && current > arr[j]) 
-				#{
-				#arr[j + 1] = arr[j];
-sll $t2,$s6,2         #t2 = 4*j
-add $t2,$s0,$0        #t2 = address arr[j]
-addi $t3,$t2,4        #t3 = address arr[j+1]
-lw $t4,($t2)          #t4 = arr[i]
-sw $t4,($t3)          # arr[j+1] = arr[j]
-addi $s6,$s6,-1		#		--j;
-			#}
-conditionwhile42:
-slt $t0,$s6,$0    # not (j < 0) then  t0 = 0 (t0 = 1 fail while condition)
-bne $t0,$0, failconditionwhile42 # t0 not 0 then fail while41 condition
-sll $t2,$s6,2         #t2 = 4*j
-add $t2,$t2,$s0        #t2 = address arr[j]
-lw $t3,($t2)          #t3 = arr[j]
-slt $t0,$t3,$s5       # if current > arr[j] then t0 =1
-beq $t0,$0,failconditionwhile42  #t0 = 0 fail 
-j while42  #while loop
-failconditionwhile42:
+#int current = arr[i];
+add $t1,$s3,$s3 # t1 =i*2
+add $t1,$t1,$t1 # t1 = 4*i
+add $t1,$t1,$s0 # t1 = address arr[i]
+lw $t2,($t1)    # t2 = arr[i]
+add $s4, $t2,$0 # s4 = current = arr[i]
 		
-doneasc4:		
+addi $s5,$s3,-1	#int j = i - 1;
 
-# arr[j + 1] = current;
-sll $t2,$s6,2         #t2 = 4*j
-add $t2,$s0,$0        #t2 = address arr[j]
-addi $t2,$t2,4        #t2 = address arr[j+1]
-sw $s5,($t2)         # arr[j+1]= current
+#while (j >= 0 && current < arr[j]) 
+j conWhile4
+While4:	
+ 
+ 		
+			#{
+###arr[j + 1] = arr[j];
+add $t1,$s5,$s5 # t1 =j*2
+add $t1,$t1,$t1 # t1 = 4*j
+add $t1,$t1,$s0 # t1 = address arr[j]
+add $t2,$t1,4   # t2 = address of arr[j+1]
+lw $t3,($t1)    #t3 = arr[j]
+sw $t3,($t2)    # arr[j+1] = arr[j]
 
-	#}
+addi $s5,$s5,-1	#	--j;
+			#}
+conWhile4:
+slt $t0,$s5,$0		#(j >= 0) == !(j<0), so condition true then t0 = 0
+bne $t0,$0,doneWhile4   # (j >= 0) false 
+#current < arr[j]
+add $t1,$s5,$s5 # t1 =j*2
+add $t1,$t1,$t1 # t1 = 4*j
+add $t1,$t1,$s0 # t1 = address arr[j]
+lw $t2,($t1)    # t2 = arr[j]
+slt $t0,$s4,$t2 # current < arr[j] , t0 = 1 when it true
+beq $t0,$0,doneWhile4  # t0= 0 then (current<arr[j]) false
+j While4         # while loop
+
+doneWhile4:
+
+			
+									
+###arr[j + 1] = current;
+add $t1,$s5,$s5 # t1 =j*2
+add $t1,$t1,$t1 # t1 = 4*j
+add $t1,$t1,$s0 # t1 = address arr[j]
+add $t2,$t1,4   # t2 = address of arr[j+1]
+sw $s4, ($t2)  # store current into arr[j+1]
+	
 
 
-
-addi $s4,$s4,1  #increase i
-j For4 #jump to condition
-
-doneFor4:  #done for loop
+addi $s3,$s3,1   # i++
+j For4 
+doneFor4: #}
 
 
 #restore saved register
