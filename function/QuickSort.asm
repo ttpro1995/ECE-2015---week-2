@@ -53,32 +53,32 @@ sw $s6, 4($sp)#store $s6
 sw $s7, 0($sp)#store $s7
 
 addi $sp, $sp, -12 # decrease stack pointer by 12 byte
-sw $a1, ($sp)      
-sw $a2, 4($sp)     
-sw $ra, 8($sp)
-addi $a2,$0, 0
-addi $a1, $a1, -1
-jal requicksort
-lw $a1, ($sp)
-lw $a2, 4($sp)
-lw $ra, 8($sp)
-addi $sp, $sp, 12
-bne $a2, $0, E5
-add $t0, $a0, $zero
-add $t1, $a1, -1
-sll $t1, $t1, 2
-add $t1, $a0, $t1
-add $t2, $a1, $zero
-div $t2, $t2, 2
+sw $a1, ($sp)    #store $a1 in stack   
+sw $a2, 4($sp)     #store $a2 in stack
+sw $ra, 8($sp)	#store $ra in stack
+addi $a2,$0, 0       #init $a2 =0
+addi $a1, $a1, -1    #decrease $a1 by 1
+jal requicksort       # run recusion quicksort
+lw $a1, ($sp)         #restore $a1
+lw $a2, 4($sp)		#restore $a1
+lw $ra, 8($sp)	#restore $ra
+addi $sp, $sp, 12      #adjust stack pointer
+bne $a2, $0, E5        # if $a2 not zero, branch to E5
+add $s0, $a0, $0    
+add $s1, $a1, -1
+sll $s1, $s1, 2
+add $s1, $a0, $s1
+add $s2, $a1, $0
+div $s2, $s2, 2
 B7:
-lw $t3, ($t0)
-lw $t4, ($t1)
-sw $t3, ($t1)
-sw $t4, ($t0)
-addi $t0, $t0, 4
-addi $t1, $t1, -4
-addi $t2, $t2, -1
-bne $t2, $0, B7
+lw $s3, ($s0)
+lw $s4, ($s1)
+sw $s3, ($s1)
+sw $s4, ($s0)
+addi $s0, $s0, 4
+addi $s1, $s1, -4
+addi $s2, $s2, -1
+bne $s2, $0, B7
 E5:
 
 
@@ -180,14 +180,14 @@ bne $s3, 1, E7
 L7:
 lw $s3, ($s2)
 slt $s4, $s3, $s0
-#bne $s4, 1, L8
+
 beq $s4,$0,L8#
 addi $s2, $s2, 4
 j L7
 L8:
 lw $s3, ($s1)
 slt $s4, $s0, $s3
-#bne $s4, 1, L9
+
 beq $s4,$0,L9#
 addi $s1, $s1, -4
 j L8
@@ -198,7 +198,6 @@ add $s2, $s2, 4
 j L9
 I1:
 slt $s5, $s2, $s1
-#bne $s5, 1, E7
 beq $s5,$0,E7#
 sw $s4, ($s1)
 sw $s3, ($s2)
@@ -218,7 +217,7 @@ sw $s2, 20($sp)#store $s5
 sw $s1, 24($sp)#store $s6
 sw $s0, 28($sp)#store $s7
 addi $sp,$sp,32  #increase stack pointer  by 32 byte
-jr $ra
+jr $ra  #return
 #################################
 printArray:
 # $a0 arr
