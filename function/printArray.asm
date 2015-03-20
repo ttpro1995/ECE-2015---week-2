@@ -1,4 +1,4 @@
-#Thai Thien
+#Thai Thien 1351040
 
 .data
 aa1:	.word	1
@@ -42,6 +42,7 @@ addi $s2,$0,0  # $s2 = i = 0
 j forPrint
 forPrintLoop:
 #for (int i=0;i<length;i++)
+#Thai Thien 1351040
  # print(a[i])
 add $t5,$s2,$s2  # t5 =i*2
 add $t5,$t5,$t5  # t5 = 4*t5
@@ -54,7 +55,7 @@ addi $v0,$0,1  # $v0 = 1 print int
 addi $sp,$sp,-4 #adjust stack pointer
 sw $ra,($sp)     #store $ra
 syscall   #print arr[i]
-
+#Thai Thien 1351040
 jal new_line  # go to new line
 
 lw $ra,($sp)   #restore %ra

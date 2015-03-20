@@ -64,6 +64,7 @@ add $t1, $t1,$t1           # $t1 = i*4
 add $s2, $a0,$t1           # s2 = *arr + 4*i =arr[i]
 lw $s3, ($s2)              # s3 = arr[i]
 beq $s3,$s1,found1         # found arr[i] = val
+#Thai Thien 1351040
 addi $s0, $s0,1             #increase i by 1
 bne $s0,$s7, loop1         #if i != num of element, jump to loop 1
 j notfound1

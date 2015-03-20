@@ -1,4 +1,4 @@
-
+#Thai Thien 1351040
 .data
 aa1:	.word	1
 aa2:	.word	3
@@ -24,7 +24,7 @@ lw $a1, ($s1)		#load arg length
 la $s2, asc		#load address asc into s2
 lw $a2, ($s2)		#load arg asc
 jal mergesort	#call binary search 
-
+#Thai Thien 1351040
 la $a0,aa1 		 #load arg arr
 la $s1, length  	#load address length into s1
 lw $a1, ($s1)		#load arg length
@@ -73,7 +73,7 @@ lw $t0, 12($sp) 									# $t0 = base address of arr
 add $t1, $t0, $s0 									# $t1 = $t0 + $s0
 add $t2, $t0, $s0 									# $t2 = $t0 + $s0
 add $t3, $t1, $s1 									# $t3 = $t1 + $s1
-
+#Thai Thien 1351040
 sub $sp, $sp, $a1									# adjust the stack pointer for temp[numofelements]
 add $t4, $sp, $zero 									# $t4 = address of temp array
 

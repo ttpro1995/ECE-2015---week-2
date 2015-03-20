@@ -4,14 +4,14 @@
 .data
 aa1:	.word	1
 aa2:	.word	3
-aa3:	.word	2
+aa3:	.word	-5
 aa4:	.word	15
 aa5:	.word	12
-aa6:	.word	25
+aa6:	.word	-9
 aa7:	.word	17
 aa8:	.word	16
 aa9:	.word	18
-aa10:	.word	20
+aa10:	.word	-20
 length:  .word  10
 val:     .word  15
 
@@ -51,7 +51,7 @@ sw $s4, 12($sp)#store $s4
 sw $s5, 8($sp)#store $s5
 sw $s6, 4($sp)#store $s6
 sw $s7, 0($sp)#store $s7
-
+#Thai Thien 1351040
 addi $sp, $sp, -12 # decrease stack pointer by 12 byte
 sw $a1, ($sp)    #store $a1 in stack   
 sw $a2, 4($sp)     #store $a2 in stack

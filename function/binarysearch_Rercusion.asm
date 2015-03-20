@@ -54,7 +54,7 @@ add $s1,$a1,$0  #$s1 = length
 add $s2,$a2,$0  #$s2 = val
 
 add $a0,$s0,$0  # $a0 = base address of array
-addi $a1,$0,0   # $a1 = low = 0
+addi $a1,$0,0   # $a1 = low = 0  #Thai Thien 1351040
 add  $a2,$s1,$0 # $a2 = high = length of array
 add  $a3,$s2,$0 # $a3 = x = val which is key
 
@@ -62,6 +62,7 @@ addi $sp,$sp,-4 #decrease stack pointer by 4
 sw $ra,($sp)   #store $ra
 jal binary_search_rercusion
 # return value should be in $v0
+#Thai Thien 1351040
 lw $ra,($sp)  #restore $ra
 addi $sp,$sp,4   #increase stack pointer by 4
 

@@ -62,7 +62,7 @@ addi $s3,$0,1  # $s3 = flag =1
 #{
 #	int  j, flag = 1;    // set flag to 1 to start first pass
 #	int temp;             // holding variable
-
+#Thai Thien 1351040
 
 
 j while3 #check while condition		
@@ -84,6 +84,7 @@ sll  $t4,$t4,2  # t4 = (j+1)*4
 add  $t4,$t4,$s0 #t4 = (j+1)*4 + base address of arr = address of arr[j+1]
 addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j]
 lw   $t5,($t3)   #t5 = arr[i]
+#Thai Thien 1351040
 lw   $t6,($t4)   #t6 = arr[i+1]
 slt $t0,$t5,$t6  #if (arr[j + 1] > arr[j])  then t0 = 1
 beq $t0,$0,noswapasc03 # if not (arr[j + 1] > arr[j]), do nothing
@@ -99,7 +100,7 @@ else3:   #			else
 addi $t4,$s4,1  #t4 = j+1  
 sll  $t4,$t4,2  # t4 = (j+1)*4
 add  $t4,$t4,$s0 #t4 = (j+1)*4 + base address of arr = address of arr[j+1]
-addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j]
+addi $t3,$t4,-4  #t3 = (j)*4 + base address of arr = address of arr[j] #Thai Thien 1351040
 lw   $t5,($t3)   #t5 = arr[i]
 lw   $t6,($t4)   #t6 = arr[i+1]
 slt $t0,$t6,$t5  #if (arr[j + 1] < arr[j])  then t0 = 1

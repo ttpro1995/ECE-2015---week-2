@@ -79,14 +79,14 @@ addi $s6,$0,-1             #ret =-1
 add $s0, $0, $0            # $s0 = bottom = 0
 add $s7, $a1,$0            # $s7 = numofelement
 addi $s7, $s7,-1           # $s7 = top = numofelement -1
-add $s1 , $a2, $0          # $s1 = val
+add $s1 , $a2, $0          # $s1 = val #Thai Thien 1351040
 add $s3, $a0, $0           #s3 = *arr = base address of array
 # $s5 = mid
 
 j whilecodition2
 whileloop2:
 add $s5,$s0,$s7     # mid = (bottom + top)
-srl $s5,$s5,1       # mid = (bottom + top) >> 1
+srl $s5,$s5,1       # mid = (bottom + top) >> 1 
 #arr[mid]
 
 add $t5,$s5,$s5  # $t5 = i*2
@@ -94,7 +94,7 @@ add $t5,$t5,$t5  # $t5 = i*4
 add  $t5,$t5,$s3  # t5 = address of arr[mid]
 lw   $t1,($t5)   # $t1 = arr[mid]
 beq  $t1,$s1,found2   #if (val == arr[mid])
-
+#Thai Thien 1351040
 slt $t0,$s1, $t1  # (key < arr[mid] t0 =1
 bne $t0,$0, valsmallermid2
 
